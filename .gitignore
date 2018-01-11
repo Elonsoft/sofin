@@ -65,5 +65,5 @@ typings/
 /test/scripts/.blockchains
 /build
 
-
+/test/scripts/*
 # End of https://www.gitignore.io/api/node
