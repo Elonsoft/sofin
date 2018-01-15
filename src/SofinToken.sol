@@ -4,19 +4,18 @@ import './zeppelin/token/BurnableToken.sol';
 
 
 contract SofinToken is BurnableToken {
-  string public constant NAME = 'SOFIN ICO';
-  string public constant SYMBOL = 'SOFIN';
-  uint256 public constant DECIMALS = 18;
+  string public constant name = 'SOFIN ICO';
+  string public constant symbol = 'SOFIN';
+  uint256 public constant decimals = 18;
 
-  uint256 public constant TOKEN_CREATION_CAP =  10700000 * 10 ** DECIMALS;
+  uint256 public constant tokenCreationCap =  450000000 * 10 ** decimals;
 
   address public multiSigWallet;
   address public owner;
 
   bool public active = true;
 
-  // token price: 0.45 USD per token, eth price = 298 USD
-  uint256 public oneTokenInWei = 1510067114093959;
+  uint256 public oneTokenInWei = 153846153846200;
 
   modifier onlyOwner {
     if (owner != msg.sender) {

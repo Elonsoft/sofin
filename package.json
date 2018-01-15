@@ -4,10 +4,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build": "rm -rf ./build && truffle compile --all",
-    "flatten": "./scripts/flatten.sh",
+    "build": "yarn flatten && rm -rf ./build && truffle compile --all ./build/flatten",
+    "flatten": "truffle-flattener ./src/SofinToken.sol > ./contracts/SofinToken.sol",
     "lint": "yarn lint:solium",
-    "lint:solium": "solium --dir contracts --reporter=pretty",
+    "lint:solium": "solium --dir src --reporter=pretty",
     "test": "truffle test"
   },
   "dependencies": {
@@ -21,6 +21,7 @@
     "babel-register": "^6.26.0",
     "dotenv": "^4.0.0",
     "ethereumjs-abi": "^0.6.5",
+    "ethereumjs-testrpc": "^6.0.3",
     "solium": "^1.1.2",
     "truffle-flattener": "^1.2.0",
     "web3": "^1.0.0-beta.27"

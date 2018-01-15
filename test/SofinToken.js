@@ -48,7 +48,7 @@ contract('SofinToken', function(accounts) {
 
     it('should mint a given amount of tokens to a given address', async function() {
       // given
-      const expectedTotalSupply = 662;
+      const expectedTotalSupply = 6499;
 
       // when
       await token.sendTransaction({ from: accounts[1], value: 1 });
@@ -130,7 +130,7 @@ contract('SofinToken', function(accounts) {
       }
     });
 
-    it('should respect the hardcap on creating 1 SOFIN tokens', async function() {
+    it('should respect the hardcap on creating 1 SOFIN token', async function() {
       // given
       const hardcap = 10700000;
 
@@ -187,6 +187,19 @@ contract('SofinToken', function(accounts) {
       } catch (e) {
         assertJump(e);
       }
+    });
+
+    it('should burn 5 SOFIN tokens', async function() {
+      // given
+      const tokensToBurn = 5,
+        expectedTotalSupply = new BigNumber(95);
+
+      // when
+      await token.burn(tokensToBurn);
+      const totalSupply = await token.totalSupply();
+
+      // then
+      assert(expectedTotalSupply, totalSupply);
     });
   });
 });
