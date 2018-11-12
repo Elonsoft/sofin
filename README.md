@@ -48,3 +48,8 @@ FLATTENER:
 // FOR VERIFICATION ON ETHERSCAN
 
 // NOTE: need test node for testing with truffle
+
+Freeze of account:
+https://github.com/intimatetoken/itm-solidity/blob/master/contracts/managed/Freezable.sol
+
+Mass token sending:

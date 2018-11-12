@@ -5,6 +5,8 @@ const assertJump = require('./helpers/assertJump'),
   SofinTokenMock = artifacts.require('./helpers/SofinTokenMock.sol'),
   BigNumber = web3.BigNumber;
 
+const { assertRevert } = require('./globals');
+
 /*
   What to test?
   - Каждую функцию протестить
@@ -202,4 +204,18 @@ contract('SofinToken', function(accounts) {
       assert(expectedTotalSupply, totalSupply);
     });
   });
+
+  describe('freezable', () => {
+    it('cannot approve from a frozen account', async () => {
+      const token = await SofinTokenMock.new(accounts[0], INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
+      await token.freezeAccount(accounts[1]);
+      try {
+          const tx = await token.approve(accounts[2], '42', { from: accounts[1] });
+          assert.fail();
+      } catch (error) {
+          assertRevert(error);
+      }
+    });
+  });
+
 });
