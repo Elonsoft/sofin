@@ -65,5 +65,7 @@ typings/
 /test/scripts/.blockchains
 /build
 
+/test/scripts/*
 
+/contracts/SofinToken.sol
 # End of https://www.gitignore.io/api/node

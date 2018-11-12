@@ -1,21 +1,21 @@
 pragma solidity 0.4.18;
 
-import 'zeppelin-solidity/contracts/token/StandardToken.sol';
+import './zeppelin/token/BurnableToken.sol';
 
-contract SofinToken is StandardToken {
-  string public constant name = "SOFIN PreICO";
-  string public constant symbol = "SOFIN";
+
+contract SofinToken is BurnableToken {
+  string public constant name = 'SOFIN ICO';
+  string public constant symbol = 'SOFIN';
   uint256 public constant decimals = 18;
 
-  uint256 public constant tokenCreationCap =  10700000 * 10 ** decimals;
+  uint256 public constant tokenCreationCap =  450000000 * 10 ** decimals;
 
   address public multiSigWallet;
   address public owner;
 
   bool public active = true;
 
-  // token price: 0.45 USD per token, eth price = 298 USD
-  uint256 public oneTokenInWei = 1510067114093959;
+  uint256 public oneTokenInWei = 153846153846200;
 
   modifier onlyOwner {
     if (owner != msg.sender) {
@@ -41,7 +41,12 @@ contract SofinToken is StandardToken {
    * @param value weis paid for purchase
    * @param amount amount of tokens purchased
    */
-  event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);
+  event TokenPurchase(
+    address indexed purchaser,
+    address indexed beneficiary,
+    uint256 value,
+    uint256 amount
+  );
 
   function SofinToken(address _multiSigWallet) public {
     multiSigWallet = _multiSigWallet;
@@ -50,27 +55,6 @@ contract SofinToken is StandardToken {
 
   function() payable public {
     createTokens();
-  }
-
-  function createTokens() internal onlyActive {
-    if (msg.value <= 0) {
-      revert();
-    }
-
-    uint256 multiplier = 10 ** decimals;
-    uint256 tokens = msg.value.mul(multiplier) / oneTokenInWei;
-
-    uint256 checkedSupply = totalSupply.add(tokens);
-    if (tokenCreationCap < checkedSupply) {
-      revert();
-    }
-
-    balances[msg.sender] += tokens;
-    totalSupply = checkedSupply;
-
-    Mint(msg.sender, tokens);
-    Transfer(address(0), msg.sender, tokens);
-    TokenPurchase(msg.sender, msg.sender, msg.value, tokens);
   }
 
   /**
@@ -106,5 +90,31 @@ contract SofinToken is StandardToken {
    */
   function setTokenPriceInWei(uint256 _oneTokenInWei) external onlyOwner {
     oneTokenInWei = _oneTokenInWei;
+  }
+
+  function createTokens() internal onlyActive {
+    if (msg.value <= 0) {
+      revert();
+    }
+
+    uint256 multiplier = 10 ** decimals;
+    uint256 tokens = msg.value.mul(multiplier) / oneTokenInWei;
+
+    uint256 checkedSupply = totalSupply.add(tokens);
+    if (tokenCreationCap < checkedSupply) {
+      revert();
+    }
+
+    balances[msg.sender] += tokens;
+    totalSupply = checkedSupply;
+
+    Mint(msg.sender, tokens);
+    Transfer(address(0), msg.sender, tokens);
+    TokenPurchase(
+      msg.sender,
+      msg.sender,
+      msg.value,
+      tokens
+    );
   }
 }
