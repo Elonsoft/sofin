@@ -8,7 +8,7 @@ contract SofinToken is BurnableToken {
   string public constant symbol = 'SOFIN';
   uint256 public constant decimals = 18;
 
-  uint256 public constant tokenCreationCap =  450000000 * 10 ** decimals;
+  uint256 public constant tokenCreationCap =  45000000 * 10 ** decimals;
 
   address public multiSigWallet;
   address public owner;
