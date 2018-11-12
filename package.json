@@ -11,6 +11,7 @@
     "test": "truffle test"
   },
   "dependencies": {
+    "truffle": "4.0.5",
     "zeppelin-solidity": "^1.5.0"
   },
   "devDependencies": {
