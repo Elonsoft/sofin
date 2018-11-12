@@ -27,7 +27,8 @@ module.exports = {
       host: 'localhost',
       port: 8545,
       network_id: '3',
-      gas: 2900000
+      gas: 2900000,
+      // from: 'todo'
     },
     live: {
       host: 'localhost',
