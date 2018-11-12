@@ -1,10 +1,9 @@
 pragma solidity 0.4.18;
 
 import './zeppelin/token/BurnableToken.sol';
-import './zeppelin/token/Freezable.sol';
 
 
-contract SofinToken is BurnableToken, Freezable {
+contract SofinToken is BurnableToken {
   string public constant name = 'SOFIN ICO';
   string public constant symbol = 'SOFIN';
   uint256 public constant decimals = 18;

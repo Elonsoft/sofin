@@ -3,6 +3,7 @@ pragma solidity 0.4.18;
 
 import './BasicToken.sol';
 import './ERC20.sol';
+import './Freezable.sol';
 
 
 /**
@@ -49,6 +50,7 @@ contract StandardToken is ERC20, BasicToken {
    * @param _value The amount of tokens to be spent.
    */
   function approve(address _spender, uint256 _value) public returns (bool) {
+    require(!isFrozen(_spender));
     allowed[msg.sender][_spender] = _value;
     Approval(msg.sender, _spender, _value);
     return true;

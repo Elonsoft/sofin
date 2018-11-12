@@ -3,13 +3,14 @@ pragma solidity 0.4.18;
 
 import './ERC20Basic.sol';
 import '../math/SafeMath.sol';
+import './Freezable.sol';
 
 
 /**
  * @title Basic token
  * @dev Basic version of StandardToken, with no allowances.
  */
-contract BasicToken is ERC20Basic {
+contract BasicToken is ERC20Basic, Freezable {
   using SafeMath for uint256;
 
   mapping(address => uint256) balances;

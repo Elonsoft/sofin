@@ -206,11 +206,14 @@ contract('SofinToken', function(accounts) {
   });
 
   describe('freezable', () => {
+    beforeEach(async function () {
+      token = await SofinTokenMock.new(accounts[0], 0, MULTI_SIG_WALLET_ADDRESS);
+    });
+
     it('cannot approve from a frozen account', async () => {
-      const token = await SofinTokenMock.new(accounts[0], INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
       await token.freezeAccount(accounts[1]);
       try {
-          const tx = await token.approve(accounts[2], '42', { from: accounts[1] });
+          const tx = await token.approve(accounts[1], '42', { from: accounts[2] });
           assert.fail();
       } catch (error) {
           assertRevert(error);
