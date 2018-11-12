@@ -41,3 +41,10 @@ To run tests you need to run `geth` in test mode: `./scripts/run-geth.sh`, then 
 * [Whitepaper (RU)](https://https://sofin.io/docs/whitepaper/ru)
 
 
+SOLIUM:
+// Linter to identify and fix style & security issues in Solidity
+
+FLATTENER:
+// FOR VERIFICATION ON ETHERSCAN
+
+// NOTE: need test node for testing with truffle
