@@ -68,3 +68,9 @@ Mass token sending:
 https://www.myetherwallet.com/  - тут можно создать аккаунт в сети робстен и дергать методы смартконтракта (но для этого нужно быть залогиненным под аккаунтом под которым деплоил) (truffle.js/robsten/from)
 
 See https://wiki.parity.io/Parity-Ethereum for parity settings
+
+To run parity in ropsten chain:
+parity --warp --chain=ropsten --port 40404 --ws-port 9657 --jsonrpc-port 9657
+
+To run parity in real chain:
+parity --warp
