@@ -36,6 +36,7 @@ contract BasicToken is ERC20Basic, Freezable {
   * @return An uint256 representing the amount owned by the passed address.
   */
   function balanceOf(address _owner) public constant returns (uint256 balance) {
+    require(!isFrozen(_owner));
     return balances[_owner];
   }
 
