@@ -23,12 +23,13 @@ const { assertRevert } = require('./globals');
 contract('SofinToken', function(accounts) {
   const MULTI_SIG_WALLET_ADDRESS = accounts[5],
    INITIAL_BALANCE = new BigNumber(100);
+  const owner = accounts[0];
 
   let token;
 
   describe('basic', async function() {
     beforeEach(async function () {
-      token = await SofinTokenMock.new(accounts[0], INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
+      token = await SofinTokenMock.new(owner, INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
     });
 
     it('has a valid multisig wallet', async function() {
@@ -45,7 +46,7 @@ contract('SofinToken', function(accounts) {
 
   describe('minting', async function() {
     beforeEach(async function () {
-      token = await SofinTokenMock.new(accounts[0], 0, MULTI_SIG_WALLET_ADDRESS);
+      token = await SofinTokenMock.new(owner, 0, MULTI_SIG_WALLET_ADDRESS);
     });
 
     it('should mint a given amount of tokens to a given address', async function() {
@@ -65,14 +66,14 @@ contract('SofinToken', function(accounts) {
       assert.equal(totalSupply.toNumber(), expectedTotalSupply);
 
       // validate sender balance
-      const senderBalance = await token.balanceOf(accounts[0]);
+      const senderBalance = await token.balanceOf(owner);
       assert.equal(senderBalance.toNumber(), 0);
     });
   });
 
   describe('create tokens', async function() {
     beforeEach(async function () {
-      token = await SofinTokenMock.new(accounts[0], INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
+      token = await SofinTokenMock.new(owner, INITIAL_BALANCE, MULTI_SIG_WALLET_ADDRESS);
     });
 
     it('should transfer 1 SOFIN token successfully', async function() {
@@ -93,7 +94,7 @@ contract('SofinToken', function(accounts) {
       assert.equal(totalSupply.toNumber(), expectedTotalSupply);
 
       // validate sender balance
-      const senderBalance = await token.balanceOf(accounts[0]);
+      const senderBalance = await token.balanceOf(owner);
       assert.equal(senderBalance.toNumber(), 99);
     });
 
@@ -115,7 +116,7 @@ contract('SofinToken', function(accounts) {
       assert.equal(totalSupply.toNumber(), expectedTotalSupply);
 
       // validate sender balance
-      const senderBalance = await token.balanceOf(accounts[0]);
+      const senderBalance = await token.balanceOf(owner);
       assert.equal(senderBalance.toNumber(), 95);
     });
 
@@ -207,13 +208,13 @@ contract('SofinToken', function(accounts) {
 
   describe('freezable', () => {
     beforeEach(async function () {
-      token = await SofinTokenMock.new(accounts[0], 10000, MULTI_SIG_WALLET_ADDRESS);
+      token = await SofinTokenMock.new(owner, 10000, MULTI_SIG_WALLET_ADDRESS);
     });
 
     it('cannot approve from a frozen account', async () => {
       await token.freezeAccount(accounts[1]);
       try {
-          const tx = await token.approve(accounts[1], '42', { from: accounts[2] });
+          const tx = await token.approve(accounts[2], '42', { from: accounts[1] });
           assert.fail();
       } catch (error) {
           assertRevert(error);
@@ -223,11 +224,11 @@ contract('SofinToken', function(accounts) {
     it('can approve before freezeAccount() but not transferFrom when msg.sender is frozen', async () => {
       const tx = await token.approve(accounts[1], '2000');
       assert.notEqual(tx, 0x0);
-      const allowed = await token.allowance(accounts[0], accounts[1]);
+      const allowed = await token.allowance(owner, accounts[1]);
       assert.equal(allowed, 2000);
-      await token.freezeAccount(accounts[1]);
+      await token.freezeAccount(owner);
       try {
-          const tx1 = await token.transferFrom(accounts[0], accounts[2], '1000', { from: accounts[1] });
+          const tx1 = await token.transferFrom(owner, accounts[2], '1000', { from: accounts[1] });
           assert.notEqual(tx1, 0x0);
           assert.fail();
       } catch (error) {
