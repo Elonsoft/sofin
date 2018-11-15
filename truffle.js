@@ -4,6 +4,10 @@ require('babel-register');
 require('babel-polyfill');
 const Web3 = require('web3');
 
+var HDWalletProvider = require("truffle-hdwallet-provider");
+var mnemonic = "inch metal target silly brother action mass brown steel convince detect void"; // 12 word mnemonic
+var provider = new HDWalletProvider(mnemonic, "http://localhost:8888");
+
 // setup chai
 // const BigNumber = Web3.BigNumber
 
@@ -24,11 +28,12 @@ module.exports = {
       // gas: 3500000
     },
     ropsten: {
-      host: 'localhost',
-      port: 9657,
-      network_id: '3',
-      gas: 2900000,
-      from: '0xbe127A1d95b5540aC0365F1B12eb5aEB394b8A31'
+      host: '127.0.0.1',
+      port: 8888,
+      network_id: '*',
+      gas: 8000000,
+      gasPrice: 100000000000,
+      provider: provider
     },
     live: {
       host: 'localhost',

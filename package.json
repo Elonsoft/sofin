@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "truffle": "4.0.5",
+    "truffle-hdwallet-provider": "^0.0.6",
     "zeppelin-solidity": "^1.5.0"
   },
   "devDependencies": {
