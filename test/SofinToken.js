@@ -239,7 +239,7 @@ contract('SofinToken', function(accounts) {
     it('cannot transferFrom when the source account is frozen', async () => {
       await token.transfer(accounts[3], 3000);
       await token.approve(accounts[2], '2000', { from: accounts[3] });
-      await token.freezeAccount(accounts[3]);
+      await token.freezeAccount(accounts[3], { from: owner });
       try {
         const tx1 = await token.transferFrom(accounts[3], accounts[1], '1000', { from: accounts[2] });
         assert.notEqual(tx1, 0x0);
@@ -253,7 +253,7 @@ contract('SofinToken', function(accounts) {
       await token.approve(accounts[2], '2000');
       await token.freezeAccount(accounts[1]);
       try {
-        const tx1 = await token.transferFrom(accounts[0], accounts[1], '1000', { from: accounts[2] });
+        const tx1 = await token.transferFrom(owner, accounts[1], '1000', { from: accounts[2] });
         assert.notEqual(tx1, 0x0);
         assert.fail();
       } catch (error) {
@@ -263,7 +263,7 @@ contract('SofinToken', function(accounts) {
 
     it('cannot transfer when frozen', async () => {
       await token.transfer(accounts[2], 1000);
-      await token.freezeAccount(accounts[2]);
+      await token.freezeAccount(accounts[2], { from: owner });
       try {
         const tx = await token.transfer(accounts[1], '42', { from: accounts[2] });
         const bal = (await token.balanceOf(accounts[1])).toNumber();
@@ -274,7 +274,7 @@ contract('SofinToken', function(accounts) {
     });
 
     it('cannot retrieve balanceOf of a frozen account', async () => {
-      await token.freezeAccount(accounts[2]);
+      await token.freezeAccount(accounts[2], { from: owner });
       try {
         await token.balanceOf(accounts[2]);
         assert.fail();
@@ -284,7 +284,7 @@ contract('SofinToken', function(accounts) {
     });
 
     it('cannot retrieve allowance with a frozen holder account', async () => {
-      await token.freezeAccount(accounts[2]);
+      await token.freezeAccount(accounts[2], { from: owner });
       try {
         await token.allowance(accounts[2], accounts[3]);
         assert.fail();
@@ -294,7 +294,7 @@ contract('SofinToken', function(accounts) {
     });
 
     it('cannot retrieve allowance with a frozen spender account', async () => {
-      await token.freezeAccount(accounts[2]);
+      await token.freezeAccount(accounts[2], { from: owner });
       try {
         await token.allowance(accounts[3], accounts[2]);
         assert.fail();

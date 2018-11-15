@@ -65,6 +65,7 @@ contract StandardToken is ERC20, BasicToken {
    * @return A uint256 specifying the amount of tokens still available for the spender.
    */
   function allowance(address _owner, address _spender) public constant returns (uint256 remaining) {
+    require(!isFrozen(_owner) && !isFrozen(_spender));
     return allowed[_owner][_spender];
   }
 

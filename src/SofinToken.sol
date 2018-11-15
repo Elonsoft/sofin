@@ -31,6 +31,33 @@ contract SofinToken is BurnableToken {
     _;
   }
 
+  /**
+  * @dev add an address to the list of frozen accounts
+  * @param account address to freeze
+  * @return true if the address was added to the list of frozen accounts, false if the address was already in the list 
+  */
+  function freezeAccount(address account) public onlyOwner returns (bool success) {
+    if (!frozenAccounts[account]) {
+      frozenAccounts[account] = true;
+      Frozen(account);
+      success = true; 
+    }
+  }
+
+  /**
+  * @dev remove an address from the list of frozen accounts
+  * @param account address to unfreeze
+  * @return true if the address was removed from the list of frozen accounts, 
+  * false if the address wasn't in the list in the first place 
+  */
+  function unfreezeAccount(address account) public onlyOwner returns (bool success) {
+    if (frozenAccounts[account]) {
+      frozenAccounts[account] = false;
+      Unfrozen(account);
+      success = true;
+    }
+  }
+
   event Mint(address indexed to, uint256 amount);
   event MintFinished();
 
