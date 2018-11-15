@@ -25,10 +25,10 @@ module.exports = {
     },
     ropsten: {
       host: 'localhost',
-      port: 8545,
+      port: 9657,
       network_id: '3',
       gas: 2900000,
-      // from: 'todo'
+      from: '0xbe127A1d95b5540aC0365F1B12eb5aEB394b8A31'
     },
     live: {
       host: 'localhost',
