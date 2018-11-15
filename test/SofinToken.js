@@ -234,6 +234,73 @@ contract('SofinToken', function(accounts) {
       } catch (error) {
           assertRevert(error);
       }
-  });
+    });
+
+    it('cannot transferFrom when the source account is frozen', async () => {
+      await token.transfer(accounts[3], 3000);
+      await token.approve(accounts[2], '2000', { from: accounts[3] });
+      await token.freezeAccount(accounts[3]);
+      try {
+        const tx1 = await token.transferFrom(accounts[3], accounts[1], '1000', { from: accounts[2] });
+        assert.notEqual(tx1, 0x0);
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
+
+    it('cannot transferFrom when the target account is frozen', async () => {
+      await token.approve(accounts[2], '2000');
+      await token.freezeAccount(accounts[1]);
+      try {
+        const tx1 = await token.transferFrom(accounts[0], accounts[1], '1000', { from: accounts[2] });
+        assert.notEqual(tx1, 0x0);
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
+
+    it('cannot transfer when frozen', async () => {
+      await token.transfer(accounts[2], 1000);
+      await token.freezeAccount(accounts[2]);
+      try {
+        const tx = await token.transfer(accounts[1], '42', { from: accounts[2] });
+        const bal = (await token.balanceOf(accounts[1])).toNumber();
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
+
+    it('cannot retrieve balanceOf of a frozen account', async () => {
+      await token.freezeAccount(accounts[2]);
+      try {
+        await token.balanceOf(accounts[2]);
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
+
+    it('cannot retrieve allowance with a frozen holder account', async () => {
+      await token.freezeAccount(accounts[2]);
+      try {
+        await token.allowance(accounts[2], accounts[3]);
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
+
+    it('cannot retrieve allowance with a frozen spender account', async () => {
+      await token.freezeAccount(accounts[2]);
+      try {
+        await token.allowance(accounts[3], accounts[2]);
+        assert.fail();
+      } catch (error) {
+        assertRevert(error);
+      }
+    });
   });
 });
