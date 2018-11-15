@@ -49,10 +49,12 @@ FLATTENER:
 
 // NOTE: need test node for testing with truffle
 
+# Useful links to implementations:
 Freeze of account:
 https://github.com/intimatetoken/itm-solidity/blob/master/contracts/managed/Freezable.sol
 
 Mass token sending:
+Not implemented
 
 # HOW TO DEPLOY
 1. Get the machine with parity installed on (open JSON RPC (see parity settings))
@@ -69,8 +71,9 @@ https://www.myetherwallet.com/  - тут можно создать аккаун�
 
 See https://wiki.parity.io/Parity-Ethereum for parity settings
 
+# HOW TO RUN PARITY NODE
 To run parity in ropsten chain:
-parity --warp --chain=ropsten --port 40404 --ws-port 9657 --jsonrpc-port 9657
+parity --warp --chain=ropsten --port 40404 --ws-port 9657 --jsonrpc-port 8888
 
 To run parity in real chain:
 parity --warp
