@@ -41,7 +41,7 @@ module.exports = {
       network_id: 1,
       gas: 3000000,
       gasPrice: 396574240,
-      from: '0x00bA5F4c653837b94Df5cE11C9FD66081b6e048E'
+      from: '0x41F3Eb216832592953E7435d36d0821239bB19cD'
     }
   }
 };
