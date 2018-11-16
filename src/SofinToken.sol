@@ -4,7 +4,7 @@ import './zeppelin/token/BurnableToken.sol';
 
 
 contract SofinToken is BurnableToken {
-  string public constant name = 'SOFIN ICO';
+  string public constant name = 'SOFIN';
   string public constant symbol = 'SOFIN';
   uint256 public constant decimals = 18;
 
