@@ -11,10 +11,13 @@
     "test": "truffle test"
   },
   "dependencies": {
+    "eth-gas-reporter": "^0.1.12",
+    "ethereumjs-wallet": "^0.6.2",
     "truffle": "4.0.5",
     "truffle-hdwallet-provider": "^0.0.6",
     "truffle-privatekey-provider": "^0.1.0",
     "truffle-wallet-provider": "^0.0.5",
+    "web3-provider-engine": "^14.1.0",
     "zeppelin-solidity": "^1.5.0"
   },
   "devDependencies": {

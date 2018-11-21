@@ -1,20 +1,15 @@
 require('dotenv').config();
-
 require('babel-register');
 require('babel-polyfill');
-const Web3 = require('web3');
 
-var HDWalletProvider = require("truffle-hdwallet-provider");
-var mnemonic = "inch metal target silly brother action mass brown steel convince detect void"; // 12 word mnemonic
-var provider = new HDWalletProvider(mnemonic, "http://localhost:8888");
+var WalletProvider = require('truffle-wallet-provider');
+const Wallet = require('ethereumjs-wallet');
 
-// setup chai
-// const BigNumber = Web3.BigNumber
+var mainNetPrivateKey = new Buffer(require('fs').readFileSync('./mainnet/private').toString(), 'hex');
+var mainNetWallet = Wallet.fromPrivateKey(mainNetPrivateKey);
 
-// const should = require('chai')
-//   .use(require('chai-as-promised'))
-//   .use(require('chai-bignumber')(BigNumber))
-//   .should();
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const NonceTrackerSubprovider = require('web3-provider-engine/subproviders/nonce-tracker');
 
 module.exports = {
   mocha: {
@@ -25,23 +20,26 @@ module.exports = {
       host: 'localhost',
       port: 7545,
       network_id: '*',
-      // gas: 3500000
     },
     ropsten: {
-      host: '127.0.0.1',
-      port: 8888,
-      network_id: '*',
-      gas: 8000000,
-      gasPrice: 100000000000,
-      provider: provider
+      network_id: '3',
+      gas: 2900000,
+      provider: function() {
+        return new HDWalletProvider(process.env.ROPSTEN_MNEMONIC, 'https://ropsten.infura.io/v3/' + process.env.INFURA_API_KEY);
+      },
     },
     live: {
-      host: 'localhost',
-      port: 8545,
-      network_id: 1,
-      gas: 3000000,
-      gasPrice: 396574240,
-      from: '0x41F3Eb216832592953E7435d36d0821239bB19cD'
+      gas: 5000000,
+      gasPrice: 8000000000,
+      network_id: '1',
+      provider: function() {
+        const wallet = new WalletProvider(mainNetWallet, 'https://mainnet.infura.io/v3/' + process.env.INFURA_API_KEY);
+        // NOTE: workaround for avoiding the 'Nonce too low' error when deploying with Infura
+        var nonceTracker = new NonceTrackerSubprovider();
+        wallet.engine._providers.unshift(nonceTracker);
+        nonceTracker.setEngine(wallet.engine);
+        return wallet;
+      }
     }
   }
-};
+}

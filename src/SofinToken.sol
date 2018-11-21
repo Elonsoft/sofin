@@ -15,7 +15,7 @@ contract SofinToken is BurnableToken {
 
   bool public active = true;
 
-  uint256 public oneTokenInWei = 153846153846200;
+  uint256 public oneTokenInWei = 65000000000000000;
 
   modifier onlyOwner {
     if (owner != msg.sender) {
